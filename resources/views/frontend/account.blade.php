@@ -137,7 +137,7 @@
                                 <li><i class="fa fa-user-o" aria-hidden="true"></i> {{ auth()->user()?->name }}</li>
                                 <li><i class="fa fa-envelope-o" aria-hidden="true"></i>{{ auth()->user()?->email }}</li>
                                 <li><i class="fa fa-phone" aria-hidden="true"></i> +91 {{ auth()->user()?->phone }}</li>
-                                <li><i class="fa fa-map-marker" aria-hidden="true"></i> {{ auth()->user()?->street_address }}</li>
+                                <li><i class="fa fa-map-marker" aria-hidden="true"></i> {{ auth()->user()->appertment_house_no }} {{ auth()->user()?->street_address }} {{ auth()->user()->town_city }} {{ auth()->user()->state }} {{ auth()->user()->postcode }}</li>
                                 <li><i class="fa fa-key" aria-hidden="true"></i> <b>Current Password:</b> ******</li>
                                 <li><a class="banner-btn" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -154,12 +154,99 @@
                           </div>
                        </div>
                        <div class="col-lg-2">
-                          <a href="" class="shop-btn">Edit</a>
+                          <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalCenterEditProfile" class="shop-btn">Edit</a>
                        </div>
                     </div>
                  </div>
               </div>
            </div>
+           <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenterEditProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog  modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">My Account</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{route('account.update')}}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="id" value="{{ auth()->user()->id }}">
+                                <div class="row mb-2">
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Name</label>
+                                          <input id="fname" type="text" name="name" class="form-control" required="required" data-error="First Name is required." value="{{ auth()->user()->name }}">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Email</label>
+                                          <input id="Email" type="email" name="email" class="form-control" required="required" data-error="Email is required." value="{{ auth()->user()->email }}">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Phone</label>
+                                          <input id="Phone" type="text" name="phone" class="form-control" required="required" data-error="Phone is required." value="{{ auth()->user()->phone }}">
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Country</label>
+                                          <select class="form-control" name="country" id="country">
+                                              <option selected value="India">India</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Street Address</label>
+                                          <input id="Street_address" type="text" name="street_address" class="form-control" required="required" data-error="Street Address is required." value="{{ auth()->user()->street_address }}">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Apartment (optional)</label>
+                                          <input id="Apartment" type="text" name="appertment_house_no" class="form-control" required="required" data-error="Apartment is required." value="{{ auth()->user()->appertment_house_no }}">
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Town / City</label>
+                                          <input id="City" type="text" name="town_city" class="form-control" required="required" data-error="City is required." value="{{ auth()->user()->town_city }}">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>State</label>
+                                          <input id="State" type="text" name="state" class="form-control" required="required" data-error="State is required." value="{{ auth()->user()->state }}">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <div class="form-group">
+                                          <label>Postcode</label>
+                                          <input id="Postcode" type="text" name="postcode" class="form-control" required="required" data-error="Postcode is required." value="{{ auth()->user()->postcode }}">
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button  type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- end Modal --}}
            <div class="row mt-5">
               <div class="col-lg-12 text-center">
                 <h3 class="mb-4">My Order Details</h3>

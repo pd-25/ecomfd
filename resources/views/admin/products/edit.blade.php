@@ -28,7 +28,7 @@
                                 <div class="col-sm-6">
                                     <select name="category_id" class="form-control" required>
                                         <option value="">Select Category</option>
-                                        @foreach ($categories as $category)
+                                        @foreach ($categoriesList as $category)
                                             <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
@@ -135,10 +135,34 @@
 
                             <!-- Image Preview -->
                             <div class="row mb-3">
-                                <div id="image-preview" class="col-sm-12 d-flex flex-wrap gap-2">
-                                    @foreach ($product->productImages as $image)
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Product Image" class="img-thumbnail m-1" style="width: 100px; height: 100px;">
-                                    @endforeach
+                                <div class="container_image">
+                                    <div class="main-image-container">
+                                        @foreach ($product->productImages as $image)
+                                            @if ($image->is_primary == 1)
+                                            <span class="star-icon" id="star">⭐</span>
+                                                <img id="mainImage" src="{{ asset('storage/' . $image->image_path) }}" alt="Product Image" class="main-image" style="width: 100px; height: 100px;">
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="gallery">
+                                        @foreach ($product->productImages as $image)
+                                            <label class="thumbnail">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Product Image" class="" style="width: 100px; height: 100px;" >
+                                                <input type="radio" class="mb-2" @if ($image->is_primary == 1) checked @endif name="imageSelect" onclick="setPrimary(this.previousElementSibling, JSON.stringify({{$image}}))">
+                                                @if ($image->is_primary != 1)
+                                                <form method="POST" action="{{ route('product.setImagesDelete', $image->id) }}"
+                                                    class="d-inline-block pl-2">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="delete-icon show_confirm"
+                                                        data-toggle="tooltip" title='Delete'>
+                                                        <i class="ri-delete-bin-2-fill"></i>
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
 
@@ -158,6 +182,28 @@
     </section>
 
     <script>
+
+        function setPrimary(image, data){
+            document.getElementById("mainImage").src = image.src;
+            document.querySelectorAll(".thumbnail img").forEach(img => img.classList.remove("active"));
+            image.classList.add("active");
+            document.getElementById("star").style.display = "block";
+            console.log(data)
+            
+            $.ajax({
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{route('product.setPrimaryImages')}}",
+                data:data
+                }).then(function( respose ) {
+                    console.log(respose)
+                    location.reload();
+            });
+
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const variantContainer = document.getElementById("variant-container");
             const addVariantBtn = document.getElementById("add-variant");

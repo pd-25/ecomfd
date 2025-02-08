@@ -145,8 +145,8 @@
                       <button type="button" class="menu-mobile-close"><i class="ion ion-ios-close"></i></button>
                    </div>
                    <ul class="menu-section">
-                      <li class="active"><a href="{{ route('index') }}">Home</a></li>
-                      <li class="menu-item-has-children">
+                      <li class="{{Route::is('index') ? 'active' : '' }}"><a href="{{ route('index') }}">Home</a></li>
+                      <li class="menu-item-has-children" >
                          <a href="#">Shop <i class="ion ion-ios-arrow-down"></i></a>
                          <div class="menu-subs menu-mega menu-column-5">
 
@@ -169,8 +169,8 @@
                             </div>
                          </div>
                       </li>
-                      <li><a href="{{route('aboutUs') }}">About</a></li>
-                      <li><a href="{{route('contactus')}}">Contact</a></li>
+                      <li class="{{Route::is('aboutUs') ? 'active' : '' }}"><a href="{{route('aboutUs') }}">About</a></li>
+                      <li class="{{Route::is('contactus') ? 'active' : '' }}"><a href="{{route('contactus')}}">Contact</a></li>
                    </ul>
                 </nav>
                 <div class="header-item-right">

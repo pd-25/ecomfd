@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\JournalController;
 use App\Http\Controllers\admin\CourseController;
 use App\Http\Controllers\admin\product\ProductController;
 use App\Http\Controllers\admin\user\userController;
+use App\Http\Controllers\admin\contact\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [AuthController::class, 'showLogin'])->name('admin.showlogin');
@@ -29,5 +30,11 @@ Route::group(['prefix' => 'admin', 'middleware'=>'admin'], function () {
     Route::put('/reviews/{review}/status', [ProductReviewController::class, 'updateStatus'])->name('reviews.updateStatus');
     Route::resource('/users', userController::class);
     Route::resource('/orders', orderController::class);
+
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::delete('/contact-delete/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+    Route::post('set-product-images', [ProductController::class, 'setPrimaryImages'])->name('product.setPrimaryImages');
+    Route::delete('product-images-delete/{id}', [ProductController::class, 'setImagesDelete'])->name('product.setImagesDelete');
 
 });

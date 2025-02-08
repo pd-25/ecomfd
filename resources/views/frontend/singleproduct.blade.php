@@ -262,7 +262,21 @@
               </div>
               <div class="col-lg-7 single-pro-ctnbox pl-lg-5">
                  <h2 class="mb-1">{{ $singleProduct->name }}</h2>
-                 <ul class="pb-list">
+                 
+                @forelse ($singleProduct->productReviews as $singleReview)
+                    <ul class="pb-list">
+                        <li class="pro-box-review">
+                            @for ($i = 1; $i <= 5; $i++)
+                            <span class="fa fa-star {{ $i <= $singleReview->star ? 'rev-checked' : '' }}"></span>
+                            @endfor
+                            <span><a href="#revBox">({{ $singleProduct->productReviews->count() }} Reviews)</a></span>
+                        <li>
+                    </ul>
+                    @empty
+                    <p>No reviews yet</p>
+                @endforelse
+                    
+                {{-- <ul class="pb-list">
                     <li class="pro-box-review">
                        <span class="fa fa-star rev-checked"></span>
                        <span class="fa fa-star rev-checked"></span>
@@ -271,8 +285,18 @@
                        <span class="fa fa-star"></span>
                        <span><a href="#revBox">(10Reviews)</a></span>
                     <li>
-                 </ul>
+                </ul> --}}
                  <p>{{ $singleProduct->description }}</p>
+                 <ul class="size-list">
+                    @forelse ($singleProduct->productVariants as $index => $productVariant)
+                        <li data-price="{{ $productVariant->price }}" data-id="{{ $productVariant->id }}"
+                            onclick="changeSize(this)" class="{{ $index === 0 ? 'active' : '' }}">
+                            <h4>Size</h4> {{ $productVariant->measurement }}{{ $productVariant->measurement_param }}
+                        </li>
+                    @empty
+                        <li>No sizes available</li>
+                    @endforelse
+                </ul>
                  <hr>
                  <p class="price-txt mb-0">₹{{ $singleProduct->productVariants->first()->price ?? '0' }}</p>
                  <p class="vt-txt">(Including VAT)</p>
@@ -281,7 +305,7 @@
                     <li class="ctrl">
                        <div class="ctrl__button ctrl__button--decrement" onclick="decrementQuantity()">–</div>
                        <div class="ctrl__counter">
-                          <input class="ctrl__counter-input" maxlength="10" type="text" value="1">
+                          <input class="ctrl__counter-input" id="quantityInput" maxlength="10" type="text" value="1">
                           <div class="ctrl__counter-num">1</div>
                        </div>
                        <div class="ctrl__button ctrl__button--increment" onclick="incrementQuantity()">+</div>
@@ -295,7 +319,7 @@
                             @endif
                         @else
                             <a onclick="promptLogin()" class="banner-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Bag</a>
-                        @endauth
+                        @endauth 
                     </li>
                  </ul>
 
@@ -582,6 +606,7 @@
                         console.log('the data- ', data);
                         if (data.status === 'success') {
                             swal(data.msg, "", "success");
+                            location.reload();
                         } else {
                             swal(data.msg, "", "success");
                         }

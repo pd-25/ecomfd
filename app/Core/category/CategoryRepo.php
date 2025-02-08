@@ -76,6 +76,6 @@ class CategoryRepo implements CategoryInterface
             $totalProductsFetched += $categoryProducts->count();
         }
 
-        dd($allocatedProducts);
+        return ($allocatedProducts);
     }
 }

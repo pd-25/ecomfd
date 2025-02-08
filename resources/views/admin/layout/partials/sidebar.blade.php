@@ -36,7 +36,12 @@
                 <span>Users</span>
             </a>
         </li>
-        
+        <li class="nav-item {{ Route::is('contact.*') ? 'active' : '' }}">
+            <a class="nav-link " href="{{route('contact.index')}}">
+                <i class="ri-group-fill"></i>
+                <span>Contact Us</span>
+            </a>
+        </li>
     </ul>
 
 </aside>

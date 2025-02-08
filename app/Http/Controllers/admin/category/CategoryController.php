@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         return view('admin.category.index', [
-            "categories" => $this->categoryInterface->fetchAllCategories("DESC")
+            "categoriesList" => $this->categoryInterface->fetchAllCategories("DESC")
         ]);
     }
 

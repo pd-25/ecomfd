@@ -202,20 +202,22 @@
            <div class="row">
               <div class="col-lg-12">
                 <form id="checkout-form" method="post" action="{{ route('placeOrder') }}" role="form" class="border-box p-4">
+                    @csrf
+                    @method('POST')
                     <div class="controls">
                        <div class="row mb-5">
                           <div class="col-lg-3">
                              <div class="form-group">
-                                <label>First Name</label>
+                                <label>Name</label>
                                 <input id="fname" type="text" name="name" class="form-control" required="required" data-error="First Name is required." value="{{ auth()->user()->name }}">
                              </div>
                           </div>
-                          <div class="col-lg-3">
+                          {{-- <div class="col-lg-3">
                              <div class="form-group">
                                 <label>Last Name</label>
                                 <input id="lname" type="text" name="lname" class="form-control" required="required" data-error="Last Name is required.">
                              </div>
-                          </div>
+                          </div> --}}
                           <div class="col-lg-3">
                              <div class="form-group">
                                 <label>Email</label>
@@ -313,22 +315,26 @@
                        <div class="row mb-4">
                           <div class="col-lg-12">
                              <div class="form-check mb-3 pl-0">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                <label class="form-check-label pay-radio" for="exampleRadios1">
-                                Pay Via Stripe
+                                <input class="form-check-input" type="radio" name="payment_mode" id="cashOnDelivery" value="cash" checked>
+                                <label class="form-check-label pay-radio" for="cashOnDelivery">
+                                Cash On Delivery
                                 </label>
                              </div>
                              <div class="form-check pl-0">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                                <label class="form-check-label pay-radio" for="exampleRadios2">
-                                Pay Via PayPal
+                                <input class="form-check-input" type="radio" name="payment_mode"
+                                id="razorpay" value="razorpay">
+                                <label class="form-check-label pay-radio" for="razorpay">
+                                Pay Via Razorpay
                                 </label>
                              </div>
                           </div>
                        </div>
                        <div class="row mb-1">
                           <div class="col-lg-12">
-                             <button type="submit" href="" class="banner-btn">Checkout</button>
+                            <button class="banner-btn" type="submit" id="placeOrderBtn">Place Order</button>
+                            <button class="banner-btn" type="button" id="payOnlineBtn"
+                                        style="display: none;">Pay Online</button>
+                             {{-- <button type="submit" href="" id="payOnlineBtn" class="banner-btn">Checkout</button> --}}
                           </div>
                        </div>
                     </div>
@@ -340,15 +346,14 @@
 
     {{-- <script src="{{ asset('frontend-asset/js/script.js') }}" defer></script> --}}
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-@endsection
-@section('script')
     <script>
+        
         document.addEventListener('DOMContentLoaded', function() {
             const cashOnDeliveryOption = document.getElementById('cashOnDelivery');
             const razorpayOption = document.getElementById('razorpay');
             const placeOrderBtn = document.getElementById('placeOrderBtn');
             const payOnlineBtn = document.getElementById('payOnlineBtn');
-
+            
             // Run toggle function on page load to set initial button state
             toggleButtons();
 
@@ -425,4 +430,6 @@
             e.preventDefault();
         }
     </script>
+@endsection
+@section('script')
 @endsection

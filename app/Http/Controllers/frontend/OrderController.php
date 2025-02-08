@@ -61,11 +61,21 @@ class OrderController extends Controller
         ]);
     }
 
+    public function cartItemsDelete(Cart $cart)
+    {
+        $cart->delete();
+        return back()->with("msg", "Cart Item Deleted successfully.");
+        // Return success response
+        // return response()->json([
+        //     'status' => 'success',
+        //     'msg' => 'Cart Item Deleted successfully!'
+        // ]);
+    }
+
     public function updateCart(Request $request)
     {
         $cartId = $request->input('cart_id');
         $quantity = $request->input('quantity');
-
         // Find the cart item by ID
         $cartItem = Cart::find($cartId);
         if ($cartItem) {

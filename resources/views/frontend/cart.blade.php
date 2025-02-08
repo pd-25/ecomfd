@@ -156,7 +156,7 @@
                                                 onclick="decrementQuantity({{ $cartitem?->id }})">–</div>
                                             <div class="ctrl__counter">
                                                 <input class="ctrl__counter-input" maxlength="10" type="text"
-                                                    value="1" id="quantityInput{{ $cartitem?->id }}" readonly>
+                                                    value="{{$cartitem?->quantity}}" id="quantityInput{{ $cartitem?->id }}" readonly>
                                                 <div class="ctrl__counter-num" id="quantityDisplay{{ $cartitem?->id }}">
                                                     {{ $cartitem?->quantity }}
                                                 </div>
@@ -167,7 +167,17 @@
                                     </ul>
                                 </td>
                                 <td>₹<span id="itemTotal{{ $cartitem?->id }}">{{ $itemTotal }}</span></td>
-                                <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                                <td>
+                                    <form method="POST" action="{{ route('cart.delete', @$cartitem->id) }}"
+                                        class="d-inline-block pl-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-icon show_confirm"
+                                            data-toggle="tooltip" title='Delete'>
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         @empty
                         @endforelse
@@ -186,10 +196,10 @@
            </div>
            <div class="row">
               <div class="col-lg-3 mb-4">
-                 <p><input id="Coupon" type="text" maxlength="10" name="Coupon" class="form-control" placeholder="Enter Coupon Code"></p>
+                 {{-- <p><input id="Coupon" type="text" maxlength="10" name="Coupon" class="form-control" placeholder="Enter Coupon Code"></p> --}}
               </div>
               <div class="col-lg-3 mb-4">
-                 <a href="" class="shop-btn">Apply Coupon</a>
+                 {{-- <a href="" class="shop-btn">Apply Coupon</a> --}}
               </div>
               <div class="col-lg-6 txright">
                  <p><a href="{{ route('checkout') }}" class="shop-btn">Checkout</a></p>
@@ -234,14 +244,21 @@
                         quantity: quantity
                     })
                 })
-                .then(response => response.json())
+                // .then(response => response.json())
                 .then(data => {
                     // Update the item total and cart total based on the response
-                    if (data.status) {
+                    // if (data.status == 200) {
                         
-                        $( "#itemTotal"+cartId ).load(window.location.href + " #itemTotal"+cartId );
-                        $( "#totalAmnt" ).load(window.location.href + " #totalAmnt" );
+                    //     $( "#itemTotal"+cartId ).load(window.location.href + " #itemTotal"+cartId );
+                    //     $( "#totalAmnt" ).load(window.location.href + " #totalAmnt" );
+                    // }
+                    if (data && data.status === 200) {
+                        location.reload();
+                        //$("#itemTotal" + cartId).load(window.location.href + "#itemTotal" + cartId);
+                        // console.error("Invalid cartId");
+                        // $("#totalAmnt").load(window.location.href + " #totalAmnt");
                     }
+
                 })
                 .catch(error => {
                     console.error('Error updating cart:', error);
@@ -345,5 +362,30 @@
             var controls = new ctrls();
             document.addEventListener('DOMContentLoaded', controls.ready);
         })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var showConfirmButtons = document.querySelectorAll('.show_confirm');
+            showConfirmButtons.forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    var form = button.closest('form');
+                    var name = button.getAttribute('data-name');
+                    event.preventDefault();
+                    swal({
+                            title: "Are you sure you want to delete this data?",
+                            text: "Once deleted, you will not be able to recover this data file!",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                form.submit();
+                            } else {
+                                swal("Your data file is safe!");
+                            }
+                        });
+                });
+            });
+        });
     </script>
 @endsection

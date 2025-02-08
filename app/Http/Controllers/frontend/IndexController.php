@@ -6,6 +6,7 @@ use App\Core\category\CategoryInterface;
 use App\Core\products\ProductInterface;
 use App\Http\Controllers\Controller;
 use App\Models\ContactUs;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -45,6 +46,22 @@ class IndexController extends Controller
     public function account()
     {
         return view('frontend.account');
+    }
+
+    public function accountUpdate(Request $request, User $user)
+    {
+        $user = User::find($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->contry = $request->country;
+        $user->street_address = $request->street_address;
+        $user->appertment_house_no = $request->appertment_house_no;
+        $user->town_city = $request->town_city;
+        $user->state = $request->state;
+        $user->postcode = $request->postcode;
+        $user->save();
+        return back()->with('msg', 'Update profile successfully');
     }
 
     public function postcontactus(Request $request)

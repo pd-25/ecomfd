@@ -25,7 +25,7 @@
                             </thead>
                             <tbody>
 
-                                @forelse ($categories as $category)
+                                @forelse ($categoriesList as $category)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $category->name }}</td>

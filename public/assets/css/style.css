@@ -1285,3 +1285,58 @@ h6 {
 .span-text-p-color {
     color: #0d6efd;
 }
+/* select.form-control:not([size]):not([multiple]) {
+    height: 0px !important;
+} */
+
+.container_image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main-image-container {
+    position: relative;
+    display: inline-block;
+}
+.main-image {
+    width: 400px;
+    height: 300px;
+    border: 3px solid gold;
+    margin-bottom: 20px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.star-icon {
+    position: absolute;
+    /* top: 10px; */
+    right: 0px;
+    font-size: 15px;
+    color: gold !important;
+    /* display: none; */
+}
+.gallery {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.thumbnail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+.thumbnail img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+.thumbnail input {
+    margin-top: 5px;
+}
+.thumbnail img.active {
+    border-color: red !important;
+}

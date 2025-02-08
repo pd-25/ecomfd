@@ -7,20 +7,16 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
-// Route::get('optimize', function () {
-
-//     \Artisan::call('optimize:clear');
-
-//     dd("optimize is cleared");
-
+// Route::get('/linkstorage', function () {
+//     Artisan::call('storage:link');
+//     return 'link create successfully !';
 // });
 
-// Route::get('storage', function () {
-
-//     \Artisan::call('storage:link');
-
-//     dd("storage is link");
-
+// Route::get('/clear-cache', function () {
+//     Artisan::call('route:cache');
+//     Artisan::call('view:clear');
+//     Artisan::call('view:clear');
+//     return 'Routes cache has clear successfully !';
 // });
 
 Auth::routes();
@@ -34,9 +30,11 @@ Route::post('/contact-us', [IndexController::class, 'postcontactus'])->name("pos
 Route::get('/products', [ProductController::class, 'products'])->name("products");
 Route::get('/single-product/{slug}', [ProductController::class, 'singleProduct'])->name("singleProduct");
 Route::group(['middleware' => 'usercheck'], function () {
-    Route::get('/account', [IndexController::class, 'account'])->name(name: 'account');
+    Route::get('/account', [IndexController::class, 'account'])->name('account');
+    Route::put('/account-update', [IndexController::class, 'accountUpdate'])->name('account.update');
     Route::post('/add-to-cart', [OrderController::class, 'addToCart'])->name('addToCart');
     Route::get('/cart', [OrderController::class, 'cart'])->name('cart');
+    Route::delete('/cart-delete/{cart}', [OrderController::class, 'cartItemsDelete'])->name('cart.delete');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/write-feedback/{product_id}', [ProductController::class, 'writeFeedback'])->name('writeFeedback');
     Route::post('/update-cart', [OrderController::class, 'updateCart'])->name('cart.update');

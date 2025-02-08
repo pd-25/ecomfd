@@ -119,7 +119,7 @@
                 <h4>support</h4>
                 <ul class="footer-menu">
                    <li><a href="{{url('privacy-policy')}}">Privacy Policy</a></li>
-                   <li><a href="offers-coupons.html">Offers Coupons</a></li>
+                   {{-- <li><a href="offers-coupons.html">Offers Coupons</a></li> --}}
                    <li><a href="{{url('terms-conditions')}}">Terms & Conditions</a></li>
                 </ul>
              </div>

@@ -7,6 +7,7 @@ use App\Core\products\ProductInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ProductImage;
 
 class ProductController extends Controller
 {
@@ -32,7 +33,7 @@ class ProductController extends Controller
     public function create()
     {
         return view('admin.products.create', [
-            'categories' => $this->categoryInterface->fetchAllCategories("DESC")
+            'categoriesList' => $this->categoryInterface->fetchAllCategories("DESC")
         ]);
     }
 
@@ -54,7 +55,7 @@ class ProductController extends Controller
                 'quantity.*' => 'required|integer',
                 'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
+            
 
             $variations = [];
             foreach ($request->variant_name as $index => $variantName) {
@@ -72,6 +73,7 @@ class ProductController extends Controller
             $productData["quantity_in_stock"] = array_sum(array_column($variations, 'quantity'));
 
             $productImages = $request->only("images");
+
 
             $storeProduct = $this->productInterface->storeProduct($productData, $variations, $productImages);
             // dd($storeProduct);
@@ -107,7 +109,7 @@ class ProductController extends Controller
     
         return view('admin.products.edit', [
             'product' => $product,
-            'categories' => $this->categoryInterface->fetchAllCategories("DESC"),
+            'categoriesList' => $this->categoryInterface->fetchAllCategories("DESC"),
         ]);
     }
     
@@ -176,5 +178,30 @@ class ProductController extends Controller
         } else {
             return redirect()->route('product-mamages.index')->with('msg', 'Failed to delete the product.');
         }
+    }
+
+    public function setPrimaryImages(Request $request)
+    {
+        // $data = $request->all();
+        $data = $request->all();
+        $jsonString = key($data);
+        $decodedData = json_decode($jsonString, true); 
+        $productImage = ProductImage::where('product_id',$decodedData['product_id'])->get();
+        foreach ($productImage as $key => $value) {
+            if($value->id == $decodedData['id'])
+            {
+                $value->is_primary = 1;
+            }else{
+                $value->is_primary = 0;
+            }
+            $value->save();
+        }
+        return back()->with('msg', 'Product images deleted successfully.');
+    }
+
+    public function setImagesDelete($id){
+        $productImage = ProductImage::find($id);
+        $productImage->delete();
+        return back()->with('msg', 'Product images deleted successfully.');
     }
 }
