@@ -1127,3 +1127,10 @@ select.form-control:not([size]):not([multiple]) {
     font-size: 20px;
     color: #333;
 }
+
+.pro-box img {
+    height: 238px;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+}

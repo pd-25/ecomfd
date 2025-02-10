@@ -162,6 +162,13 @@
                                                 @endif
                                             </label>
                                         @endforeach
+                                        <label class="thumbnail">
+                                            <input type="file" id="fileInput" style="display: none;">
+                                            <img id="uploadImage" src="{{ asset('assets/img/upload.png') }}" alt="Product Image" style="width: 100px; height: 100px;">
+                                        </label>
+                                        <label class="thumbnail">
+                                            <div id="preview"></div>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -180,8 +187,58 @@
             </div>
         </div>
     </section>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+    $(document).ready(function () {
+        $("#uploadImage").off("click").on("click", function (event) {
+            event.preventDefault();
+            $("#fileInput").click(); 
+        });
+
+        $("#fileInput").off("change").on("change", function (event) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                $("#preview").html('<img src="' + e.target.result + '" style="width: 100px; height: 100px;" /> <div class="d-flex justify-content-center mt-2"><a href="javascript:void(0)" class="btn btn-primary btn-sm mx-2" id="uploadButton">Upload</a></div>');
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+
+        $(document).on("click", "#uploadButton", function () {
+            uploadImages();
+        });
+    });
+
+        function uploadImages(){
+            var fileInput = document.getElementById('fileInput');
+            var product_id = '{{$product->id}}';
+            var file = fileInput.files[0]; 
+            if (!file) {
+                alert("Please select an image to upload.");
+                return;
+            }
+            var formData = new FormData();
+            formData.append('image', file);
+            formData.append('product_id', product_id);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            $.ajax({
+                url: "{{ route('product.addImages') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    //alert("Image uploaded successfully!");
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert("An error occurred while uploading the image.");
+                    console.error(xhr.responseText);
+                }
+            });
+
+        }
 
         function setPrimary(image, data){
             document.getElementById("mainImage").src = image.src;

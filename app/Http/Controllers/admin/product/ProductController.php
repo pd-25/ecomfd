@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProductImage;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -203,5 +204,24 @@ class ProductController extends Controller
         $productImage = ProductImage::find($id);
         $productImage->delete();
         return back()->with('msg', 'Product images deleted successfully.');
+    }
+
+    public function addImages(Request $request){
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'product_id' => 'required|integer',
+        ]);
+          
+        if ($request->file('image')) {
+            $db_image = time() . rand(0000, 9999) . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs("ProductImages", $db_image, 'public');
+        }
+        ProductImage::create([
+            "product_id" => $request->product_id,
+            "image_path" => "ProductImages/" . $db_image,
+            "is_primary" => 0
+        ]);
+
+        return response()->json(['success' => "Images added successfully"], 200);
     }
 }
