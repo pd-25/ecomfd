@@ -130,9 +130,9 @@ class ProductController extends Controller
                 'measurement_param.*' => 'required|string',
                 'price.*' => 'required|numeric',
                 'quantity.*' => 'required|integer',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                //'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-            // dd($request->all());
+            //dd($request->all());
             // Prepare variations
             $variations = [];
             foreach ($request->variant_name as $index => $variantName) {

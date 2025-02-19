@@ -36,6 +36,6 @@ Route::group(['prefix' => 'admin', 'middleware'=>'admin'], function () {
 
     Route::post('add-single-product-images', [ProductController::class, 'addImages'])->name('product.addImages');
     Route::post('set-product-images', [ProductController::class, 'setPrimaryImages'])->name('product.setPrimaryImages');
-    Route::delete('product-images-delete/{id}', [ProductController::class, 'setImagesDelete'])->name('product.setImagesDelete');
+    Route::get('product-images-delete/{id}', [ProductController::class, 'setImagesDelete'])->name('product.setImagesDelete');
 
 });

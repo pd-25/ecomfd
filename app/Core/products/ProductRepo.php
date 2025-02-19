@@ -77,6 +77,7 @@ class ProductRepo implements ProductInterface
     }
     public function updateProduct($productId, $productData, $variations, $productImages)
     {
+        // dd($productData);
         try {
             return DB::transaction(function () use ($productId, $productData, $variations, $productImages) {
 
@@ -86,31 +87,33 @@ class ProductRepo implements ProductInterface
                     throw new \Exception("Product not found");
                 }
                 $product->update($productData);
-
+                
+                
                 // Update variations
-                DB::table('product_variants')->where('product_id', $productId)->delete();
-                foreach ($variations as &$variation) {
-                    $variation['product_id'] = $productId;
-                }
-                DB::table('product_variants')->insert($variations);
+                // dd($productId);
+                // DB::table('product_variants')->where('product_id', $productId)->delete();
+                // foreach ($variations as &$variation) {
+                //     $variation['product_id'] = $productId;
+                // }
+                // DB::table('product_variants')->insert($variations);
 
                 // Update product images
-                if (!empty($productImages['images'])) {
-                    // Remove old images
-                    ProductImage::where('product_id', $productId)->delete();
+                // if (!empty($productImages['images'])) {
+                //     // Remove old images
+                //     ProductImage::where('product_id', $productId)->delete();
 
-                    // Add new images
-                    foreach ($productImages['images'] as $index => $pImage) {
-                        $db_image = time() . rand(0000, 9999) . '.' . $pImage->getClientOriginalExtension();
-                        $pImage->storeAs("ProductImages", $db_image, 'public');
+                //     // Add new images
+                //     foreach ($productImages['images'] as $index => $pImage) {
+                //         $db_image = time() . rand(0000, 9999) . '.' . $pImage->getClientOriginalExtension();
+                //         $pImage->storeAs("ProductImages", $db_image, 'public');
 
-                        ProductImage::create([
-                            "product_id" => $productId,
-                            "image_path" => "ProductImages/" . $db_image,
-                            "is_primary" => $index === 0 ? 1 : 0  // Set first image as primary
-                        ]);
-                    }
-                }
+                //         ProductImage::create([
+                //             "product_id" => $productId,
+                //             "image_path" => "ProductImages/" . $db_image,
+                //             "is_primary" => $index === 0 ? 1 : 0  // Set first image as primary
+                //         ]);
+                //     }
+                // }
 
                 return true;
             });

@@ -150,7 +150,16 @@
                                                 <img src="{{ asset('storage/' . $image->image_path) }}" alt="Product Image" class="" style="width: 100px; height: 100px;" >
                                                 <input type="radio" class="mb-2" @if ($image->is_primary == 1) checked @endif name="imageSelect" onclick="setPrimary(this.previousElementSibling, JSON.stringify({{$image}}))">
                                                 @if ($image->is_primary != 1)
-                                                <form method="POST" action="{{ route('product.setImagesDelete', $image->id) }}"
+                                                {{-- <a href="{{ route('product.setImagesDelete', $image->id) }}" onclick="confirmDelete()" class="delete-icon delete_images"
+                                                    data-toggle="tooltip" title='Delete' ><i class="ri-delete-bin-2-fill"></i></a> --}}
+                                                <a href="{{ route('product.setImagesDelete', $image->id) }}" 
+                                                    onclick="return confirmDelete({{ $image->id }})" 
+                                                    class="delete-icon delete_images" 
+                                                    data-toggle="tooltip" 
+                                                    title='Delete'>
+                                                    <i class="ri-delete-bin-2-fill"></i>
+                                                </a>
+                                                {{-- <form method="POST" action="{{ route('product.setImagesDelete', $image->id) }}"
                                                     class="d-inline-block pl-2">
                                                     @csrf
                                                     @method('DELETE')
@@ -158,7 +167,7 @@
                                                         data-toggle="tooltip" title='Delete'>
                                                         <i class="ri-delete-bin-2-fill"></i>
                                                     </button>
-                                                </form>
+                                                </form> --}}
                                                 @endif
                                             </label>
                                         @endforeach
@@ -172,15 +181,12 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Submit and Cancel Buttons -->
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col-sm-12">
                                     <button type="submit" class="btn btn-sm btn-primary float-end m-2">Save Changes</button>
                                     <a href="{{ route('product-mamages.index') }}" class="btn btn-sm btn-danger float-end m-2">Cancel</a>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -190,9 +196,23 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 
+    // function confirmDelete(imageId) {
+    //     if (confirm("Are you sure you want to delete this image?")) {
+    //        return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
+    function confirmDelete(imageId) {
+        if (!confirm("Are you sure you want to delete this image?")) {
+            return false;
+        }
+        return true;
+    }
+
     $(document).ready(function () {
         $("#uploadImage").off("click").on("click", function (event) {
-            event.preventDefault();
+            event.preventDefault(); 
             $("#fileInput").click(); 
         });
 
