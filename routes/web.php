@@ -28,6 +28,7 @@ Route::get('/certificate', [IndexController::class, 'certificate'])->name("certi
 Route::get('/contact-us', [IndexController::class, 'contactus'])->name("contactus");
 Route::post('/contact-us', [IndexController::class, 'postcontactus'])->name("postcontactus");
 Route::get('/products', [ProductController::class, 'products'])->name("products");
+Route::get('/category-products/{slug}', [ProductController::class, 'categoryWiseProduct'])->name("categoryWiseProduct");
 Route::get('/single-product/{slug}', [ProductController::class, 'singleProduct'])->name("singleProduct");
 Route::group(['middleware' => 'usercheck'], function () {
     Route::get('/account', [IndexController::class, 'account'])->name('account');

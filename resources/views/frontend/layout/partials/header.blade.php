@@ -152,14 +152,19 @@
 
                             @foreach ($categories as $category)
                                 <div class="list-item">
-                                   <h4 class="title">{{ $category->name }}</h4>
+                                   <h4 class="title"><span><img src="{{asset('frontend-asset/images/rice-icon.png')}}" class="img-fluid w-auto" alt="..."></span> <span>{{ $category->name }}</span></h4>
                                    <hr>
                                    <ul>
                                         @foreach ($category->products as $indexPro=>$product)
-                                            <li><a href="{{ route('singleProduct', $product->slug) }}">{{ $product->name }}</a></li>
-                                            @if ($indexPro > 7)
-                                                <li class="menu-btncls"><a href="#">View More <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></li>
+                                             @if ($indexPro < 6)
+                                                <li><a href="{{ route('singleProduct', $product->slug) }}">{{ $product->name }}</a></li>
+                                            @else
+                                               <li class="menu-btncls"><a href="{{route('categoryWiseProduct', $category->slug)}}">View More <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></li>
                                             @endif
+                                            <!--<li><a href="{{ route('singleProduct', $product->slug) }}">{{ $product->name }}</a></li>-->
+                                            <!--@if ($indexPro == 7)-->
+                                            <!--    <li class="menu-btncls"><a href="#">View More <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></li>-->
+                                            <!--@endif-->
                                         @endforeach
                                    </ul>
                                 </div>

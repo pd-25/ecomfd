@@ -116,14 +116,14 @@
                             </div>
 
                             <!-- Add More Button -->
-                            <div class="row mb-3">
+                            {{-- <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <button type="button" class="btn btn-sm btn-secondary" id="add-variant">Add More</button>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <!-- Upload Product Images -->
-                            <div class="row mb-3">
+                            {{-- <div class="row mb-3">
                                 <label for="inputText" class="col-sm-2 col-form-label">Upload Product Images</label>
                                 <div class="col-sm-12">
                                     <input type="file" name="images[]" class="form-control" id="images" multiple>
@@ -131,7 +131,7 @@
                                         <span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <!-- Image Preview -->
                             <div class="row mb-3">

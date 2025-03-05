@@ -5,6 +5,7 @@ namespace App\Core\products;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductReview;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -77,7 +78,6 @@ class ProductRepo implements ProductInterface
     }
     public function updateProduct($productId, $productData, $variations, $productImages)
     {
-        // dd($productData);
         try {
             return DB::transaction(function () use ($productId, $productData, $variations, $productImages) {
 
@@ -88,11 +88,20 @@ class ProductRepo implements ProductInterface
                 }
                 $product->update($productData);
                 
+                $productVariant = ProductVariant::where('product_id', $productId)->first();
+                // $productVariant->variant_name = $variations->variant_name;
+                $productVariant->measurement = $variations[0]['measurement'];
+                $productVariant->measurement_param = $variations[0]['measurement_param'];
+                $productVariant->price = $variations[0]['price'];
+                $productVariant->quantity = $variations[0]['quantity'];
+                $productVariant->save();
+
+                // dd($productVariant);
                 
                 // Update variations
-                // dd($productId);
                 // DB::table('product_variants')->where('product_id', $productId)->delete();
-                // foreach ($variations as &$variation) {
+                
+                // foreach ($variations as $variation) {
                 //     $variation['product_id'] = $productId;
                 // }
                 // DB::table('product_variants')->insert($variations);
@@ -129,6 +138,7 @@ class ProductRepo implements ProductInterface
             DB::transaction(function () use ($id) {
                 $product = Product::findOrFail($id);
                 $product->productImages()->delete();  // Delete related images
+                DB::table('carts')->where('product_id', $id)->delete();
                 DB::table('product_variants')->where('product_id', $id)->delete();  // Delete related variants
                 $product->delete();  // Now delete the product
             });

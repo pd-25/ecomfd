@@ -139,12 +139,12 @@
 
 
                             <!-- Add More Button -->
-                            <div class="row mb-3">
+                            {{-- <div class="row mb-3">
                                 <div class="col-sm-12">
                                     <button type="button" class="btn btn-sm btn-secondary" id="add-variant">Add
                                         More</button>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="row mb-3">
                                 <label for="inputText" class="col-sm-2 col-form-label">Upload Product Images</label>

@@ -145,10 +145,11 @@ class ProductController extends Controller
                 ];
             }
     
+            
             // Prepare main product data
             $productData = $request->only("name", "category_id", "type", "description");
             $productData["quantity_in_stock"] = array_sum(array_column($variations, 'quantity'));
-    
+            
             // Prepare images if any new images are uploaded
             $productImages = $request->only("images");
     

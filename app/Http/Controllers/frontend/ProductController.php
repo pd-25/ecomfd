@@ -5,6 +5,8 @@ namespace App\Http\Controllers\frontend;
 use App\Core\products\ProductInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -28,9 +30,19 @@ class ProductController extends Controller
 
     public function products()
     {
-
+        // $allProducts = $this->productInterface->fetchAllProducts("DESC");
+        // dd($allProducts);
         return view('frontend.product', [
             'allProducts' => $this->productInterface->fetchAllProducts("DESC"),
+        ]);
+    }
+
+    public function categoryWiseProduct($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        $product = Product::where('category_id', $category->id)->orderBy('name', 'asc')->get();
+        return view('frontend.product', [
+            'allProducts' => $product,
         ]);
     }
 

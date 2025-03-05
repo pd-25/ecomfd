@@ -4,7 +4,7 @@
         <div data-ride="carousel" class="carousel slide" id="carouselExampleIndicators">
             <div role="listbox" class="carousel-inner">
                 <!-- Slide One - Set the background image for this slide in the line below -->
-                <div style="background-image: url('frontend-asset/images/inn-banner.jpg')" class="carousel-item active">
+                <div style="background-image: url('{{asset('frontend-asset/images/inn-banner.jpg')}}')" class="carousel-item active">
                 </div>
             </div>
         </div>
@@ -65,7 +65,13 @@
 		<div class="container">
 		   <div class="row">
 			  <div class="col-lg-12 text-center mb-lg-4">
-				 <h2 class="hm-head">Product Category Name</h2>
+				 <h2 class="hm-head">
+                    @if (Route::is('products'))
+                        All Products
+                    @else
+                        Product Category
+                    @endif
+                </h2>
 			  </div>
 		   </div>
 		   <div class="row">
@@ -82,7 +88,7 @@
 							<span class="fa fa-star rev-checked"></span>
 							<span class="fa fa-star"></span>
 							</p>
-							<a href="{{route("singleProduct", $product->slug)}}" class="shop-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart</a>
+							<a href="{{route("singleProduct", $product->slug)}}" class="shop-btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> View Product</a>
 					  	</div>
 					</div>
                 @empty
